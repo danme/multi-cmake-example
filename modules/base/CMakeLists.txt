@@ -19,12 +19,13 @@ set(IncludePackageLocation include/base)
 # the targets contribute to baseTargets for exports and installs
 ###
 add_subdirectory(core)
-#add_subdirectory(adapterA)
+add_subdirectory(adapterA)
 #add_subdirectory(adapterB)
 
 # tests
 if(BUILD_TESTING)
 	add_subdirectory(tests/core)
+	add_subdirectory(tests/adapterA)
 endif()
 
 ###
