@@ -12,7 +12,7 @@ include(GenerateExportHeader)
 
 # target
 add_library(core BaseCore.cpp)
-add_library(base::core ALIAS core) # make the target accessible via its exported name
+add_library(Base::core ALIAS core) # make the target accessible via its exported name
 generate_export_header(core)
 target_compile_features(core
 	PRIVATE cxx_auto_type)
@@ -23,7 +23,8 @@ target_include_directories(core
 
 # target version properties
 set_target_properties(core PROPERTIES
-	VERSION ${base_VERSION}
+	OUTPUT_NAME basecore
+	VERSION ${Base_VERSION}
 	SOVERSION 0
 	INTERFACE_core_MAJOR_VERSION 0)
 set_property(TARGET core APPEND PROPERTY
@@ -33,18 +34,33 @@ set_property(TARGET core APPEND PROPERTY
 # Install
 ###
 
-# install core library
+# install core library (add to export targets)
 install(TARGETS core
-	EXPORT  baseTargets
-	LIBRARY DESTINATION ${LibraryPackageLocation}
-	ARCHIVE DESTINATION ${LibraryPackageLocation}
-	RUNTIME DESTINATION bin
-	INCLUDES DESTINATION ${IncludePackageLocation}
-	COMPONENT core)
+	EXPORT  coreTargets
+	LIBRARY DESTINATION ${LibraryPackageLocation} COMPONENT Core
+	ARCHIVE DESTINATION ${LibraryPackageLocation} COMPONENT Core
+	RUNTIME DESTINATION ${ExecutablePackageLocation} COMPONENT Core
+	INCLUDES DESTINATION ${IncludePackageLocation} COMPONENT CoreDevel)
 
 # install core library headers for development
 install(FILES BaseCore.h
 		"${CMAKE_CURRENT_BINARY_DIR}/core_export.h"
 	DESTINATION ${IncludePackageLocation}
-	COMPONENT Devel)
+	COMPONENT CoreDevel)
+
+###
+# Export
+###
+
+# create targets file with paths into the build dir
+export(EXPORT coreTargets
+	FILE "${CMAKE_CURRENT_BINARY_DIR}/BaseCoreTargets.cmake"
+	NAMESPACE Base::)
+
+# create targets file with paths into the install dir
+install(EXPORT coreTargets
+	FILE BaseCoreTargets.cmake
+	NAMESPACE Base::
+	DESTINATION ${ConfigPackageLocation}
+	COMPONENT CoreDevel)
 

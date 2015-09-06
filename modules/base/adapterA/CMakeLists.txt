@@ -12,7 +12,7 @@ include(GenerateExportHeader)
 
 # target
 add_library(adapterA CoreAdapterA.cpp)
-add_library(base::adapterA ALIAS adapterA) # make the target accessible via its exported name
+add_library(Base::adapterA ALIAS adapterA) # make the target accessible via its exported name
 generate_export_header(adapterA)
 target_compile_features(adapterA
 	PRIVATE cxx_auto_type)
@@ -21,11 +21,12 @@ target_include_directories(adapterA
 	INTERFACE $<INSTALL_INTERFACE:${IncludePackageLocation}>
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
 target_link_libraries(adapterA
-	PUBLIC base::core)
+	PUBLIC Base::core)
 
 # target version properties
 set_target_properties(adapterA PROPERTIES
-	VERSION ${base_VERSION}
+	OUTPUT_NAME baseadapterA
+	VERSION ${Base_VERSION}
 	SOVERSION 0
 	INTERFACE_adapterA_MAJOR_VERSION 0)
 set_property(TARGET adapterA APPEND PROPERTY
@@ -37,16 +38,31 @@ set_property(TARGET adapterA APPEND PROPERTY
 
 # install core library
 install(TARGETS adapterA
-	EXPORT  baseTargets
-	LIBRARY DESTINATION ${LibraryPackageLocation}
-	ARCHIVE DESTINATION ${LibraryPackageLocation}
-	RUNTIME DESTINATION bin
-	INCLUDES DESTINATION ${IncludePackageLocation}
-	COMPONENT A)
+	EXPORT  adapterATargets
+	LIBRARY DESTINATION ${LibraryPackageLocation} COMPONENT A
+	ARCHIVE DESTINATION ${LibraryPackageLocation} COMPONENT A
+	RUNTIME DESTINATION bin COMPONENT A
+	INCLUDES DESTINATION ${IncludePackageLocation} COMPONENT ADevel)
 
 # install core library headers for development
 install(FILES CoreAdapterA.h
-		"${CMAKE_CURRENT_BINARY_DIR}/core_export.h"
+		"${CMAKE_CURRENT_BINARY_DIR}/adaptera_export.h"
 	DESTINATION ${IncludePackageLocation}
-	COMPONENT Devel)
+	COMPONENT ADevel)
+
+###
+# Export
+###
+
+# create targets file with paths into the build dir
+export(EXPORT adapterATargets
+	FILE "${CMAKE_CURRENT_BINARY_DIR}/BaseATargets.cmake"
+	NAMESPACE Base::)
+
+# create targets file with paths into the install dir
+install(EXPORT adapterATargets
+	FILE BaseATargets.cmake
+	NAMESPACE Base::
+	DESTINATION ${ConfigPackageLocation}
+	COMPONENT ADevel)
 

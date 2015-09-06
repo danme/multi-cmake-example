@@ -14,7 +14,7 @@ add_executable(test_core TestCore.cpp)
 target_compile_features(test_core
 	PRIVATE cxx_auto_type)
 target_link_libraries(test_core
-	PRIVATE base::core)
+	PRIVATE Base::core)
 
 ###
 # Tests

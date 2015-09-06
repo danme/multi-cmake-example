@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.3)
 
 # Package configuration
-project(base CXX)
+project(Base CXX)
 
 # includes
 include(CPack)
@@ -9,9 +9,11 @@ include(CTest)
 include(CMakePackageConfigHelpers)
 
 # package variables
-set(base_VERSION 0.0.1)
-set(LibraryPackageLocation lib/base)
+set(Base_VERSION 0.0.1)
+set(ExecutablePackageLocation bin)
+set(LibraryPackageLocation lib)
 set(IncludePackageLocation include/base)
+set(ConfigPackageLocation lib/cmake/base)
 
 ###
 # Targets
@@ -33,8 +35,8 @@ endif()
 # create version file for base package
 ###
 write_basic_package_version_file(
-	"${CMAKE_CURRENT_BINARY_DIR}/baseConfigVersion.cmake"
-	VERSION ${base_VERSION}
+	"${CMAKE_CURRENT_BINARY_DIR}/BaseConfigVersion.cmake"
+	VERSION ${Base_VERSION}
 	COMPATIBILITY AnyNewerVersion)
 
 ###
@@ -42,13 +44,9 @@ write_basic_package_version_file(
 ###
 
 # create cmake files in build directory to use the build directly
-# create targets file with paths into the build dir
-export(EXPORT baseTargets
-	FILE "${CMAKE_CURRENT_BINARY_DIR}/baseTargets.cmake"
-	NAMESPACE base::)
 # copy config for use of the build dir
-configure_file(cmake/baseConfig.cmake
-	"${CMAKE_CURRENT_BINARY_DIR}/baseConfig.cmake"
+configure_file(cmake/BaseConfig.cmake
+	"${CMAKE_CURRENT_BINARY_DIR}/BaseConfig.cmake"
 	COPYONLY)
 
 ###
@@ -56,15 +54,9 @@ configure_file(cmake/baseConfig.cmake
 ###
 
 # create cmake files in install directory
-set(ConfigPackageLocation lib/cmake/base)
-# create targets file with paths into the install dir
-install(EXPORT baseTargets
-	FILE baseTargets.cmake
-	NAMESPACE base::
-	DESTINATION ${ConfigPackageLocation})
 # copy config for development use of the installed version
-install(FILES cmake/baseConfig.cmake
-		"${CMAKE_CURRENT_BINARY_DIR}/baseConfigVersion.cmake"
+install(FILES cmake/BaseConfig.cmake
+		"${CMAKE_CURRENT_BINARY_DIR}/BaseConfigVersion.cmake"
 	DESTINATION ${ConfigPackageLocation}
-	COMPONENT Devel)
+	COMPONENT BaseDevel)
 
