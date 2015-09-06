@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.3)
 project(Base CXX)
 
 # includes
+include(cmake/CPackProperties.cmake)
 include(CPack)
 include(CTest)
 include(CMakePackageConfigHelpers)
