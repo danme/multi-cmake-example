@@ -23,12 +23,13 @@ set(ConfigPackageLocation lib/cmake/base)
 ###
 add_subdirectory(core)
 add_subdirectory(adapterA)
-#add_subdirectory(adapterB)
+add_subdirectory(adapterB)
 
 # tests
 if(BUILD_TESTING)
 	add_subdirectory(tests/core)
 	add_subdirectory(tests/adapterA)
+	add_subdirectory(tests/adapterB)
 endif()
 
 ###
