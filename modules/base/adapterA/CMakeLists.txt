@@ -42,7 +42,7 @@ install(TARGETS adapterA
 	LIBRARY DESTINATION ${LibraryPackageLocation} COMPONENT A
 	ARCHIVE DESTINATION ${LibraryPackageLocation} COMPONENT ADevel
 	RUNTIME DESTINATION bin COMPONENT A
-	INCLUDES DESTINATION ${IncludePackageLocation} COMPONENT ADevel)
+	INCLUDES DESTINATION include)
 
 # install core library headers for development
 install(FILES include/base/CoreAdapterA.h

@@ -40,7 +40,7 @@ install(TARGETS core
 	LIBRARY DESTINATION ${LibraryPackageLocation} COMPONENT Core
 	ARCHIVE DESTINATION ${LibraryPackageLocation} COMPONENT CoreDevel
 	RUNTIME DESTINATION ${ExecutablePackageLocation} COMPONENT Core
-	INCLUDES DESTINATION ${IncludePackageLocation} COMPONENT CoreDevel)
+	INCLUDES DESTINATION include)
 
 # install core library headers for development
 install(FILES include/base/BaseCore.h

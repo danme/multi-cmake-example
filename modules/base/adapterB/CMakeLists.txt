@@ -44,7 +44,7 @@ install(TARGETS adapterB
 	LIBRARY DESTINATION ${LibraryPackageLocation} COMPONENT B
 	ARCHIVE DESTINATION ${LibraryPackageLocation} COMPONENT BDevel
 	RUNTIME DESTINATION bin COMPONENT B
-	INCLUDES DESTINATION ${IncludePackageLocation} COMPONENT BDevel)
+	INCLUDES DESTINATION include)
 
 # install core library headers for development
 install(FILES include/base/CoreAdapterB.h
