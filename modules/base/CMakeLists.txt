@@ -50,6 +50,18 @@ write_basic_package_version_file(
 configure_file(cmake/BaseConfig.cmake
 	"${CMAKE_CURRENT_BINARY_DIR}/BaseConfig.cmake"
 	COPYONLY)
+# CPack - license
+configure_file(COPYING
+	"${CMAKE_CURRENT_BINARY_DIR}/COPYING.txt"
+	COPYONLY)
+# CPack - readme
+configure_file(README
+	"${CMAKE_CURRENT_BINARY_DIR}/README.txt"
+	COPYONLY)
+# CPack - welcome
+configure_file(WELCOME
+	"${CMAKE_CURRENT_BINARY_DIR}/WELCOME.txt"
+	COPYONLY)
 
 ###
 # Install

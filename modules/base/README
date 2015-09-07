@@ -1,0 +1,46 @@
+This is the base package of the cmake tutorial for multi module setups.
+
+The base package provides 3 libraries that all just print some Hello World strings:
+* core: example core library
+* adapterA: example adapter library for an imaginary interface A
+* adapterB: example adapter library for an imaginary interface B
+
+This project is configured with CMake.
+
+Build
+-----
+
+Use your prefered way working with CMake.
+Recommended out-of-source build.
+
+You can choose to build the libraries static or shared by setting BUILD_SHARED_LIBS to OFF or ON.
+
+Install
+-------
+
+To install everything from this package build the target install.
+
+This package contains a couple of install components:
+* Runtime: group needed to use the libraries at runtime (shared libraries)
+** Core: is required and always installed
+** A: installs library for adapter A
+** B: installs library for adapter B
+* Development: group needed to use the libraries at development time (headers, cmake-files, static-libraries).
+** BaseDevel: Basic cmake-files to use this package (CONFIG)
+** CoreDevel: dev files for core library
+** ADevel: dev files for adapter A library
+** BDevel: dev files for adapter B library
+
+You can install components at own risks (beware of dependencies) with
+
+    cmake -DCOMPONENT=Core -P <path-to-base-build-dir>/cmake_install.cmake
+
+Prefer to use CPack:
+
+    cpack -G TGZ
+
+produces two archives one for the Runtime Components and one for the Development components.
+Install these tar files.
+
+Or use a CPack Generator that is multi component aware like NSIS or PackageMaker to select the desired components in a graphical insterface.
+
