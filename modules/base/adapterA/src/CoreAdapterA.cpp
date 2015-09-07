@@ -2,8 +2,8 @@
 // Created by Daniel Menke on 13.05.15.
 //
 
-#include "CoreAdapterA.h"
-#include "BaseCore.h"
+#include "base/CoreAdapterA.h"
+#include "base/BaseCore.h"
 
 #include "iostream"
 

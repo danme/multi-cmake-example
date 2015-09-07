@@ -11,15 +11,15 @@ include(GenerateExportHeader)
 ###
 
 # target
-add_library(adapterA CoreAdapterA.cpp)
+add_library(adapterA src/CoreAdapterA.cpp)
 add_library(Base::adapterA ALIAS adapterA) # make the target accessible via its exported name
-generate_export_header(adapterA)
+generate_export_header(adapterA
+	EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/include/base/adaptera_export.h)
 target_compile_features(adapterA
 	PRIVATE cxx_auto_type)
 target_include_directories(adapterA
-	PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-	INTERFACE $<INSTALL_INTERFACE:${IncludePackageLocation}>
-		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
+	PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 target_link_libraries(adapterA
 	PUBLIC Base::core)
 
@@ -45,8 +45,8 @@ install(TARGETS adapterA
 	INCLUDES DESTINATION ${IncludePackageLocation} COMPONENT ADevel)
 
 # install core library headers for development
-install(FILES CoreAdapterA.h
-		"${CMAKE_CURRENT_BINARY_DIR}/adaptera_export.h"
+install(FILES include/base/CoreAdapterA.h
+		"${CMAKE_CURRENT_BINARY_DIR}/include/base/adaptera_export.h"
 	DESTINATION ${IncludePackageLocation}
 	COMPONENT ADevel)
 

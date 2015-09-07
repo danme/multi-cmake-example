@@ -11,15 +11,15 @@ include(GenerateExportHeader)
 ###
 
 # target
-add_library(core BaseCore.cpp)
+add_library(core src/BaseCore.cpp)
 add_library(Base::core ALIAS core) # make the target accessible via its exported name
-generate_export_header(core)
+generate_export_header(core
+	EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/include/base/core_export.h)
 target_compile_features(core
 	PRIVATE cxx_auto_type)
 target_include_directories(core
-	PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-	INTERFACE $<INSTALL_INTERFACE:${IncludePackageLocation}>
-		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
+	PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 
 # target version properties
 set_target_properties(core PROPERTIES
@@ -43,8 +43,8 @@ install(TARGETS core
 	INCLUDES DESTINATION ${IncludePackageLocation} COMPONENT CoreDevel)
 
 # install core library headers for development
-install(FILES BaseCore.h
-		"${CMAKE_CURRENT_BINARY_DIR}/core_export.h"
+install(FILES include/base/BaseCore.h
+		"${CMAKE_CURRENT_BINARY_DIR}/include/base/core_export.h"
 	DESTINATION ${IncludePackageLocation}
 	COMPONENT CoreDevel)
 

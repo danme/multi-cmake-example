@@ -5,7 +5,7 @@
 #ifndef BASE_CORE_H
 #define BASE_CORE_H
 
-#include "core_export.h"
+#include "base/core_export.h"
 
 class CORE_EXPORT BasePrinter {
 
