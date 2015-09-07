@@ -40,7 +40,7 @@ set_property(TARGET adapterA APPEND PROPERTY
 install(TARGETS adapterA
 	EXPORT  adapterATargets
 	LIBRARY DESTINATION ${LibraryPackageLocation} COMPONENT A
-	ARCHIVE DESTINATION ${LibraryPackageLocation} COMPONENT A
+	ARCHIVE DESTINATION ${LibraryPackageLocation} COMPONENT ADevel
 	RUNTIME DESTINATION bin COMPONENT A
 	INCLUDES DESTINATION ${IncludePackageLocation} COMPONENT ADevel)
 
