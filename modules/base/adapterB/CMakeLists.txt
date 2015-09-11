@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.3)
 
 # includes (CMake)
+include(cmake/CPackProperties.cmake)
 include(GenerateExportHeader)
 
 # dependencies

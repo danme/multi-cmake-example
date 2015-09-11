@@ -5,7 +5,6 @@ project(Base CXX)
 
 # includes
 include(cmake/CPackProperties.cmake)
-include(CPack)
 include(CTest)
 include(CMakePackageConfigHelpers)
 
@@ -73,4 +72,11 @@ install(FILES cmake/BaseConfig.cmake
 		"${CMAKE_CURRENT_BINARY_DIR}/BaseConfigVersion.cmake"
 	DESTINATION ${ConfigPackageLocation}
 	COMPONENT BaseDevel)
+
+###
+# Packaging
+###
+
+# exception: CPack needs to be included at the end (special case)
+include(CPack)
 
