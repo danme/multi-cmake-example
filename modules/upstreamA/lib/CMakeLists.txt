@@ -46,7 +46,7 @@ install(TARGETS libA
 	INCLUDES DESTINATION ${IncludePackageLocation} COMPONENT LibDevel)
 
 # install core library headers for development
-install(FILES include/base/LibA.h
+install(FILES include/upstreamA/LibA.h
 		"${CMAKE_CURRENT_BINARY_DIR}/include/upstreamA/lib_export.h"
 	DESTINATION ${IncludePackageLocation}
 	COMPONENT LibDevel)
