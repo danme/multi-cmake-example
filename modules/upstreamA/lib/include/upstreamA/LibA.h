@@ -7,7 +7,7 @@
 
 #include "upstreamA/lib_export.h"
 
-class LIBA_EXPORT LibAPrinter {
+class LIB_EXPORT LibAPrinter {
 
 public:
     void print();

@@ -14,6 +14,7 @@ set(ExecutablePackageLocation bin)
 set(LibraryPackageLocation lib)
 set(IncludePackageLocation include/upstreamA)
 set(ConfigPackageLocation lib/cmake/upstreamA)
+set(PackageNamespace UpstreamA::)
 
 ###
 # Targets
