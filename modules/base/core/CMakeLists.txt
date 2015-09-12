@@ -55,7 +55,7 @@ install(FILES include/base/BaseCore.h
 
 # create targets file with paths into the build dir
 export(EXPORT coreTargets
-	FILE "${CMAKE_CURRENT_BINARY_DIR}/BaseCoreTargets.cmake"
+	FILE "${CMAKE_BINARY_DIR}/BaseCoreTargets.cmake"
 	NAMESPACE Base::)
 
 # create targets file with paths into the install dir

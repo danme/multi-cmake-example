@@ -3,3 +3,4 @@ install
 dist
 *.swp
 .idea/
+CMakeFiles

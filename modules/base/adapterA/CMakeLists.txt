@@ -57,7 +57,7 @@ install(FILES include/base/CoreAdapterA.h
 
 # create targets file with paths into the build dir
 export(EXPORT adapterATargets
-	FILE "${CMAKE_CURRENT_BINARY_DIR}/BaseATargets.cmake"
+	FILE "${CMAKE_BINARY_DIR}/BaseATargets.cmake"
 	NAMESPACE Base::)
 
 # create targets file with paths into the install dir
