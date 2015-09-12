@@ -16,6 +16,7 @@ cd base
 if [ ! -f CMakeCache.txt ]
 then
     cmake \
+        -G "${CMAKE_GENERATOR:-"Unix Makefiles"}" \
         -D CMAKE_INSTALL_PREFIX=${CUR_DIR}/install \
         -D CMAKE_PREFIX_PATH=${CUR_DIR}/install \
 	-D BUILD_SHARED_LIBS=ON \
@@ -33,6 +34,7 @@ cd upstreamA
 if [ ! -f CMakeCache.txt ]
 then
     cmake \
+        -G "${CMAKE_GENERATOR:-"Unix Makefiles"}" \
         -D CMAKE_INSTALL_PREFIX=${CUR_DIR}/install \
         -D CMAKE_PREFIX_PATH=${CUR_DIR}/install \
 	-D BUILD_SHARED_LIBS=ON \
@@ -50,6 +52,7 @@ cd myapp1
 if [ ! -f CMakeCache.txt ]
 then
     cmake \
+        -G "${CMAKE_GENERATOR:-"Unix Makefiles"}" \
         -D CMAKE_INSTALL_PREFIX=${CUR_DIR}/install \
         -D CMAKE_PREFIX_PATH=${CUR_DIR}/install \
 	-D BUILD_SHARED_LIBS=ON \
@@ -69,6 +72,7 @@ cd mystaticapp
 if [ ! -f CMakeCache.txt ]
 then
     cmake \
+        -G "${CMAKE_GENERATOR:-"Unix Makefiles"}" \
         -D CMAKE_INSTALL_PREFIX=${CUR_DIR}/install \
 	-D CMAKE_BUILD_TYPE=Release \
 	../../modules/myStaticApp/
