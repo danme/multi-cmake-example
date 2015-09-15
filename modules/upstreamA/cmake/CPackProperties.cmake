@@ -23,12 +23,12 @@ set(CPACK_RESOURCE_FILE_WELCOME "${CMAKE_CURRENT_BINARY_DIR}/WELCOME.txt")
 set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
 set(CPACK_COMPONENTS_GROUPING ONE_PER_GROUP)
 
-# coponents
-set(CPACK_COMPONENTS_ALL UpstreamADevel)
+# components
+string(TOUPPER "${PROJECT_NAME}Devel" CompDUpper)
 
 # names & descriptions
-set(CPACK_COMPONENT_UPSTREAMADEVEL_DISPLAY_NAME "Upstream A Development")
-set(CPACK_COMPONENT_UPSTREAMADEVEL_DESCRIPTION "CMake support for Upstream A package.")
+set(CPACK_COMPONENT_${CompDUpper}_DISPLAY_NAME "Upstream A Development" CACHE INTERNAL "" FORCE)
+set(CPACK_COMPONENT_${CompDUpper}_DESCRIPTION "CMake support for Upstream A package." CACHE INTERNAL "" FORCE)
 
 # requireds
 
@@ -38,5 +38,5 @@ set(CPACK_COMPONENT_UPSTREAMADEVEL_DESCRIPTION "CMake support for Upstream A pac
 # Runtime
 
 # Development
-set(CPACK_COMPONENT_UPSTREAMADEVEL_GROUP "Development")
+set(CPACK_COMPONENT_${CompDUpper}_GROUP "Development" CACHE INTERNAL "" FORCE)
 

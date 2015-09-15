@@ -18,22 +18,23 @@
 # CPack properties for libA
 
 # components
-set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} Lib LibDevel PARENT_SCOPE)
+string(TOUPPER ${ComponentName} CompUpper)
+string(TOUPPER ${ComponentDevelName} CompDUpper)
 
 # name & description
-set(CPACK_COMPONENT_LIB_DISPLAY_NAME "Lib" PARENT_SCOPE)
-set(CPACK_COMPONENT_LIBDEVEL_DISPLAY_NAME "Lib Development" PARENT_SCOPE)
+set(CPACK_COMPONENT_${CompUpper}_DISPLAY_NAME "Lib" CACHE INTERNAL "" FORCE)
+set(CPACK_COMPONENT_${CompDUpper}_DISPLAY_NAME "Lib Development" CACHE INTERNAL "" FORCE)
 
 # required
-set(CPACK_COMPONENT_LIB_REQUIRED ON PARENT_SCOPE)
+set(CPACK_COMPONENT_${CompUpper}_REQUIRED ON CACHE INTERNAL "" FORCE)
 
 # dependencies
-set(CPACK_COMPONENT_LIBDEVEL_DEPENDS UpstreamADevel Lib PARENT_SCOPE)
+set(CPACK_COMPONENT_${CompDUpper}_DEPENDS ${PROJECT_NAME}Devel ${ComponentName} CACHE INTERNAL "" FORCE)
 
 # groups
 # Runtime
-set(CPACK_COMPONENT_LIB_GROUP "Runtime" PARENT_SCOPE)
+set(CPACK_COMPONENT_${CompUpper}_GROUP "Runtime" CACHE INTERNAL "" FORCE)
 
 # Development
-set(CPACK_COMPONENT_LIBDEVEL_GROUP "Development" PARENT_SCOPE)
+set(CPACK_COMPONENT_${CompDUpper}_GROUP "Development" CACHE INTERNAL "" FORCE)
 

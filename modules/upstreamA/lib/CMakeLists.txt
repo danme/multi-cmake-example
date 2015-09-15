@@ -18,16 +18,32 @@
 cmake_minimum_required(VERSION 3.3)
 
 # target variables
+# treat them as constants, later modification can lead to hard to track bugs.
 set(TargetName lib)
-set(ExportsName libTargets)
+set(ExportsName "${PROJECT_NAME}${TargetName}Targets")
 # install components
-set(ComponentName Lib)
-set(ComponentDevelName LibDevel)
-# targets-file name is usually "<package name><component name>Targets.cmake"
+# use a qualified name that is unlikely to colide when imported to external
+# projects like <package name><target name>
+set(ComponentName ${PROJECT_NAME}${TargetName})
+set(ComponentDevelName ${PROJECT_NAME}${TargetName}Devel)
+# targets-file
+# targets-file name is usually "<package name><component key>Targets.cmake"
 # see CPackProperties.cmake and The ...Config.cmake file for the components usage
+# NOTE: the component key if a free string used in the Config file.
+#       The install components do not imply the keys automatically.
 set(TargetsFilename UpstreamALibTargets.cmake)
+# output name
+# this name is used for the output file like: lib<package>_<target>.so
+# and must be designed to unlikely colide with existing files,
+# since on Linux typically all libraries are installed in a central lib folder.
+string(TOLOWER "${PROJECT_NAME}_${TargetName}" OutputName)
+
 # sources
+# collecting the sources at the beginning is often seen and can be usefull
+# for example when generating Qt MOC files.
 set(TargetSources src/LibA.cpp)
+# headers are structured the same way they are installed,
+# because we want to have the same include paths in our interface.
 set(TargetHeaders ${IncludePackageLocation}/LibA.h)
 
 # includes (CMake)
@@ -49,19 +65,23 @@ generate_export_header(${TargetName}
 	EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/${IncludePackageLocation}/${TargetName}_export.h)
 target_compile_features(${TargetName}
 	PRIVATE cxx_auto_type)
+# the install command adds the include dirs when installing, but
+# the export script and current build need the include dirs to be set here:
 target_include_directories(${TargetName}
 	PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
+	
+# linking
 target_link_libraries(${TargetName}
 	PRIVATE Base::adapterA)
 
 # target version properties
 # define unique names and versions here !!!
 set_target_properties(${TargetName} PROPERTIES
-	OUTPUT_NAME upstreamalib # <-- unique install name
-	VERSION ${UpstreamA_VERSION}
+	OUTPUT_NAME ${OutputName}
+	VERSION ${PROJECT_VERSION}
 	SOVERSION 0
-	INTERFACE_${TargetName}_MAJOR_VERSION 0) # <-- target name is part of the property
+	INTERFACE_${TargetName}_MAJOR_VERSION 0)
 set_property(TARGET ${TargetName} APPEND PROPERTY
 	COMPATIBLE_INTERFACE_STRING ${TargetName}_MAJOR_VERSION)
 
