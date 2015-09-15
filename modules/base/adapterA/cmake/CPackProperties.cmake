@@ -18,22 +18,23 @@
 # CPack properties
 
 # coponents
-set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} A ADevel PARENT_SCOPE)
+string(TOUPPER ${ComponentName} CompUpper)
+string(TOUPPER ${ComponentDevelName} CompDUpper)
 
 # names & descriptions
-set(CPACK_COMPONENT_A_DISPLAY_NAME "Core Adapter A" PARENT_SCOPE)
-set(CPACK_COMPONENT_A_DESCRIPTION "Adpater for the Base core library conforming to the A interface." PARENT_SCOPE)
+set(CPACK_COMPONENT_${CompUpper}_DISPLAY_NAME "Core Adapter A" CACHE INTERNAL "" FORCE)
+set(CPACK_COMPONENT_${CompUpper}_DESCRIPTION "Adpater for the Base core library conforming to the A interface." CACHE INTERNAL "" FORCE)
 
 # requireds
 
 # dependencies
-set(CPACK_COMPONENT_A_DEPENDS Core PARENT_SCOPE)
-set(CPACK_COMPONENT_ADEVEL_DEPENDS CoreDevel A PARENT_SCOPE)
+set(CPACK_COMPONENT_${CompUpper}_DEPENDS Basecore CACHE INTERNAL "" FORCE)
+set(CPACK_COMPONENT_${CompDUpper}_DEPENDS BasecoreDevel ${ComponentName} CACHE INTERNAL "" FORCE)
 
 # groups
 # Runtime
-set(CPACK_COMPONENT_A_GROUP "Runtime" PARENT_SCOPE)
+set(CPACK_COMPONENT_${CompUpper}_GROUP "Runtime" CACHE INTERNAL "" FORCE)
 
 # Development
-set(CPACK_COMPONENT_ADEVEL_GROUP "Development" PARENT_SCOPE)
+set(CPACK_COMPONENT_${CompDUpper}_GROUP "Development" CACHE INTERNAL "" FORCE)
 

@@ -16,19 +16,19 @@
 # along with cmake-tutorial.  If not, see <http://www.gnu.org/licenses/>.
 
 # CPack properties
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_BINARY_DIR}/COPYING.txt")
-set(CPACK_RESOURCE_FILE_README "${CMAKE_BINARY_DIR}/README.txt")
-set(CPACK_RESOURCE_FILE_WELCOME "${CMAKE_BINARY_DIR}/WELCOME.txt")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_BINARY_DIR}/COPYING.txt")
+set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_BINARY_DIR}/README.txt")
+set(CPACK_RESOURCE_FILE_WELCOME "${CMAKE_CURRENT_BINARY_DIR}/WELCOME.txt")
 
 set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
 set(CPACK_COMPONENTS_GROUPING ONE_PER_GROUP)
 
-# coponents
-set(CPACK_COMPONENTS_ALL BaseDevel)
+# components
+string(TOUPPER "${PROJECT_NAME}Devel" CompDUpper)
 
 # names & descriptions
-set(CPACK_COMPONENT_BASEDEVEL_DISPLAY_NAME "Base Development")
-set(CPACK_COMPONENT_BASEDEVEL_DESCRIPTION "CMake support for Base package.")
+set(CPACK_COMPONENT_${CompDUpper}_DISPLAY_NAME "Base Development" CACHE INTERNAL "" FORCE)
+set(CPACK_COMPONENT_${CompDUpper}_DESCRIPTION "CMake support for Base package." CACHE INTERNAL "" FORCE)
 
 # requireds
 
@@ -38,5 +38,5 @@ set(CPACK_COMPONENT_BASEDEVEL_DESCRIPTION "CMake support for Base package.")
 # Runtime
 
 # Development
-set(CPACK_COMPONENT_BASEDEVEL_GROUP "Development")
+set(CPACK_COMPONENT_${CompDUpper}_GROUP "Development" CACHE INTERNAL "" FORCE)
 

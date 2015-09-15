@@ -18,19 +18,20 @@
 cmake_minimum_required(VERSION 3.3)
 
 # Package configuration
-project(Base CXX)
+project(Base VERSION 0.0.1 LANGUAGES CXX)
+
+# package variables
+# destination paths for installation
+set(ExecutablePackageLocation bin)
+set(LibraryPackageLocation lib)
+set(IncludePackageLocation include/base)
+set(ConfigPackageLocation lib/cmake/base)
+set(PackageNamespace "${PROJECT_NAME}::")
 
 # includes
 include(cmake/CPackProperties.cmake)
 include(CTest)
 include(CMakePackageConfigHelpers)
-
-# package variables
-set(Base_VERSION 0.0.1)
-set(ExecutablePackageLocation bin)
-set(LibraryPackageLocation lib)
-set(IncludePackageLocation include/base)
-set(ConfigPackageLocation lib/cmake/base)
 
 ###
 # Targets
@@ -52,9 +53,12 @@ endif()
 # Versioning
 # create version file for base package
 ###
+
+# create a tweak version for the current day for development
+string(TIMESTAMP Today "%y%m%d")
 write_basic_package_version_file(
-	"${CMAKE_BINARY_DIR}/BaseConfigVersion.cmake"
-	VERSION ${Base_VERSION}
+	"${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+	VERSION ${PROJECT_VERSION}.${Today}
 	COMPATIBILITY AnyNewerVersion)
 
 ###
@@ -63,20 +67,20 @@ write_basic_package_version_file(
 
 # create cmake files in build directory to use the build directly
 # copy config for use of the build dir
-configure_file(cmake/BaseConfig.cmake
-	"${CMAKE_BINARY_DIR}/BaseConfig.cmake"
+configure_file(cmake/${PROJECT_NAME}Config.cmake
+	"${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
 	COPYONLY)
 # CPack - license
 configure_file(COPYING
-	"${CMAKE_BINARY_DIR}/COPYING.txt"
+	"${CMAKE_CURRENT_BINARY_DIR}/COPYING.txt"
 	COPYONLY)
 # CPack - readme
 configure_file(README
-	"${CMAKE_BINARY_DIR}/README.txt"
+	"${CMAKE_CURRENT_BINARY_DIR}/README.txt"
 	COPYONLY)
 # CPack - welcome
 configure_file(WELCOME
-	"${CMAKE_BINARY_DIR}/WELCOME.txt"
+	"${CMAKE_CURRENT_BINARY_DIR}/WELCOME.txt"
 	COPYONLY)
 
 ###
@@ -85,10 +89,10 @@ configure_file(WELCOME
 
 # create cmake files in install directory
 # copy config for development use of the installed version
-install(FILES cmake/BaseConfig.cmake
-		"${CMAKE_BINARY_DIR}/BaseConfigVersion.cmake"
+install(FILES cmake/${PROJECT_NAME}Config.cmake
+		"${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
 	DESTINATION ${ConfigPackageLocation}
-	COMPONENT BaseDevel)
+	COMPONENT ${PROJECT_NAME}Devel)
 
 ###
 # Packaging

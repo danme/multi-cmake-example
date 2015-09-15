@@ -18,22 +18,23 @@
 # CPack properties
 
 # coponents
-set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} B BDevel PARENT_SCOPE)
+string(TOUPPER ${ComponentName} CompUpper)
+string(TOUPPER ${ComponentDevelName} CompDUpper)
 
 # names & descriptions
-set(CPACK_COMPONENT_B_DISPLAY_NAME "Core Adapter B" PARENT_SCOPE)
-set(CPACK_COMPONENT_B_DESCRIPTION "Adpater for the Base core library conforming to the B interface." PARENT_SCOPE)
+set(CPACK_COMPONENT_${CompUpper}_DISPLAY_NAME "Core Adapter B" CACHE INTERNAL "" FORCE)
+set(CPACK_COMPONENT_${CompUpper}_DESCRIPTION "Adpater for the Base core library conforming to the B interface." CACHE INTERNAL "" FORCE)
 
 # requireds
 
 # dependencies
-set(CPACK_COMPONENT_B_DEPENDS Core PARENT_SCOPE)
-set(CPACK_COMPONENT_BDEVEL_DEPENDS CoreDevel B PARENT_SCOPE)
+set(CPACK_COMPONENT_${CompUpper}_DEPENDS Basecore CACHE INTERNAL "" FORCE)
+set(CPACK_COMPONENT_${CompDUpper}_DEPENDS BasecoreDevel ${ComponentName} CACHE INTERNAL "" FORCE)
 
 # groups
 # Runtime
-set(CPACK_COMPONENT_B_GROUP "Runtime" PARENT_SCOPE)
+set(CPACK_COMPONENT_${CompUpper}_GROUP "Runtime" CACHE INTERNAL "" FORCE)
 
 # Development
-set(CPACK_COMPONENT_BDEVEL_GROUP "Development" PARENT_SCOPE)
+set(CPACK_COMPONENT_${CompDUpper}_GROUP "Development" CACHE INTERNAL "" FORCE)
 

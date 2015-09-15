@@ -17,6 +17,35 @@
 
 cmake_minimum_required(VERSION 3.3)
 
+# target variables
+# treat them as constants, later modification can lead to hard to track bugs.
+set(TargetName adapterB)
+set(ExportsName "${PROJECT_NAME}${TargetName}Targets")
+# install components
+# use a qualified name that is unlikely to colide when imported to external
+# projects like <package name><target name>
+set(ComponentName ${PROJECT_NAME}${TargetName})
+set(ComponentDevelName ${PROJECT_NAME}${TargetName}Devel)
+# targets-file
+# targets-file name is usually "<package name><component key>Targets.cmake"
+# see CPackProperties.cmake and The ...Config.cmake file for the components usage
+# NOTE: the component key if a free string used in the Config file.
+#       The install components do not imply the keys automatically.
+set(TargetsFilename BaseBTargets.cmake)
+# output name
+# this name is used for the output file like: lib<package>_<target>.so
+# and must be designed to unlikely colide with existing files,
+# since on Linux typically all libraries are installed in a central lib folder.
+string(TOLOWER "${PROJECT_NAME}_${TargetName}" OutputName)
+
+# sources
+# collecting the sources at the beginning is often seen and can be usefull
+# for example when generating Qt MOC files.
+set(TargetSources src/CoreAdapterB.cpp)
+# headers are structured the same way they are installed,
+# because we want to have the same include paths in our interface.
+set(TargetHeaders ${IncludePackageLocation}/CoreAdapterB.h)
+
 # includes (CMake)
 include(cmake/CPackProperties.cmake)
 include(GenerateExportHeader)
@@ -29,60 +58,65 @@ include(GenerateExportHeader)
 ###
 
 # target
-add_library(adapterB src/CoreAdapterB.cpp)
-add_library(Base::adapterB ALIAS adapterB) # make the target accessible via its exported name
-generate_export_header(adapterB
-	EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/include/base/adapterb_export.h)
-target_compile_features(adapterB
+add_library(${TargetName} ${TargetSources})
+# make target accessible via its exported name
+add_library(${PackageNamespace}${TargetName} ALIAS ${TargetName})
+generate_export_header(${TargetName}
+	EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/${IncludePackageLocation}/${TargetName}_export.h)
+target_compile_features(${TargetName}
 	PRIVATE cxx_auto_type)
-target_include_directories(adapterB
+# the install command adds the include dirs when installing, but
+# the export script and current build need the include dirs to be set here:
+target_include_directories(${TargetName}
 	PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
-target_link_libraries(adapterB
+
+# linking
+target_link_libraries(${TargetName}
 	PUBLIC Base::core)
 
 # target version properties
-set_target_properties(adapterB PROPERTIES
-	OUTPUT_NAME baseadapterB
-	VERSION ${Base_VERSION}
+# define unique names and versions here !!!
+set_target_properties(${TargetName} PROPERTIES
+	OUTPUT_NAME ${OutputName}
+	VERSION ${PROJECT_VERSION}
 	SOVERSION 0
-	INTERFACE_adapterB_MAJOR_VERSION 0)
-set_property(TARGET adapterB APPEND PROPERTY
-	COMPATIBLE_INTERFACE_STRING adapterB_MAJOR_VERSION)
+	INTERFACE_${TargetName}_MAJOR_VERSION 0)
+set_property(TARGET ${TargetName} APPEND PROPERTY
+	COMPATIBLE_INTERFACE_STRING ${TargetName}_MAJOR_VERSION)
 
 ###
 # Install
 ###
 
-# install core library
-# shared libs: LIBRARY needed for runtime
-# static libs: ARCHIVE needed for development
-install(TARGETS adapterB
-	EXPORT  adapterBTargets
-	LIBRARY DESTINATION ${LibraryPackageLocation} COMPONENT B
-	ARCHIVE DESTINATION ${LibraryPackageLocation} COMPONENT BDevel
-	RUNTIME DESTINATION bin COMPONENT B
+# install library (add to export targets)
+# INCLUDES defines the include directories after installation,
+# we use the same path in dev as in installation with the origin include
+install(TARGETS ${TargetName}
+	EXPORT  ${ExportsName}
+	LIBRARY DESTINATION ${LibraryPackageLocation} COMPONENT ${ComponentName}
+	ARCHIVE DESTINATION ${LibraryPackageLocation} COMPONENT ${ComponentDevelName}
+	RUNTIME DESTINATION ${ExecutablePackageLocation} COMPONENT ${ComponentName}
 	INCLUDES DESTINATION include)
 
-# install core library headers for development
-install(FILES include/base/CoreAdapterB.h
-		"${CMAKE_CURRENT_BINARY_DIR}/include/base/adapterb_export.h"
+# install library headers for development
+install(FILES ${TargetHeaders}
+		"${CMAKE_CURRENT_BINARY_DIR}/${IncludePackageLocation}/${TargetName}_export.h"
 	DESTINATION ${IncludePackageLocation}
-	COMPONENT BDevel)
+	COMPONENT ${ComponentDevelName})
 
 ###
 # Export
 ###
 
 # create targets file with paths into the build dir
-export(EXPORT adapterBTargets
-	FILE "${CMAKE_BINARY_DIR}/BaseBTargets.cmake"
-	NAMESPACE Base::)
+export(EXPORT ${ExportsName}
+	FILE "${CMAKE_BINARY_DIR}/${TargetsFilename}"
+	NAMESPACE ${PackageNamespace})
 
 # create targets file with paths into the install dir
-install(EXPORT adapterBTargets
-	FILE BaseBTargets.cmake
-	NAMESPACE Base::
+install(EXPORT ${ExportsName}
+	FILE ${TargetsFilename}
+	NAMESPACE ${PackageNamespace}
 	DESTINATION ${ConfigPackageLocation}
-	COMPONENT BDevel)
-
+	COMPONENT ${ComponentDevelName})
