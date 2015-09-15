@@ -53,7 +53,7 @@ endif()
 # create a tweak version for the current day for development
 string(TIMESTAMP Today "%y%m%d")
 write_basic_package_version_file(
-	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+	"${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
 	VERSION ${PROJECT_VERSION}.${Today}
 	COMPATIBILITY AnyNewerVersion)
 
@@ -64,7 +64,7 @@ write_basic_package_version_file(
 # create cmake files in build directory to use the build directly
 # copy config for use of the build dir
 configure_file(cmake/${PROJECT_NAME}Config.cmake
-	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+	"${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
 	COPYONLY)
 # CPack - license
 configure_file(COPYING
@@ -86,7 +86,7 @@ configure_file(WELCOME
 # create cmake files in install directory
 # copy config for development use of the installed version
 install(FILES cmake/${PROJECT_NAME}Config.cmake
-		"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+		"${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
 	DESTINATION ${ConfigPackageLocation}
 	COMPONENT ${PROJECT_NAME}Devel)
 

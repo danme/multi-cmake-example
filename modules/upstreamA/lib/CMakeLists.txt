@@ -111,7 +111,7 @@ install(FILES ${TargetHeaders}
 
 # create targets file with paths into the build dir
 export(EXPORT ${ExportsName}
-	FILE "${CMAKE_CURRENT_BINARY_DIR}/${TargetsFilename}"
+	FILE "${CMAKE_BINARY_DIR}/${TargetsFilename}"
 	NAMESPACE ${PackageNamespace})
 
 # create targets file with paths into the install dir
@@ -120,4 +120,3 @@ install(EXPORT ${ExportsName}
 	NAMESPACE ${PackageNamespace}
 	DESTINATION ${ConfigPackageLocation}
 	COMPONENT ${ComponentDevelName})
-
