@@ -17,6 +17,32 @@
 
 cmake_minimum_required(VERSION 3.3)
 
+# target variables
+# treat them as constants, later modification can lead to hard to track bugs.
+set(TargetName myapp1)
+set(ExportsName "${PROJECT_NAME}${TargetName}Targets")
+# install components
+# use a qualified name that is unlikely to colide when imported to external
+# projects like <package name><target name>
+set(ComponentName ${PROJECT_NAME}${TargetName})
+set(ComponentDevelName ${PROJECT_NAME}${TargetName}Devel)
+# targets-file
+# targets-file name is usually "<package name><component key>Targets.cmake"
+# see CPackProperties.cmake and The ...Config.cmake file for the components usage
+# NOTE: the component key if a free string used in the Config file.
+#       The install components do not imply the keys automatically.
+set(TargetsFilename MyApp1Targets.cmake)
+# output name
+# this name is used for the output file like: lib<package>_<target>.so
+# and must be designed to unlikely colide with existing files,
+# since on Linux typically all libraries are installed in a central lib folder.
+string(TOLOWER "${PROJECT_NAME}_${TargetName}" OutputName)
+
+# sources
+# collecting the sources at the beginning is often seen and can be usefull
+# for example when generating Qt MOC files.
+set(TargetSources src/MyApp.cpp)
+
 # includes (CMake)
 include(cmake/CPackProperties.cmake)
 
@@ -28,43 +54,46 @@ find_package(UpstreamA 0.0.1 REQUIRED)
 ###
 
 # target
-add_executable(myapp src/MyApp.cpp)
-add_executable(MyApp1::myapp ALIAS myapp) # make the target accessible via its exported name
-target_compile_features(myapp
+add_library(${TargetName} ${TargetSources})
+# make target accessible via its exported name
+add_library(${PackageNamespace}${TargetName} ALIAS ${TargetName})
+target_compile_features(${TargetName}
 	PRIVATE cxx_auto_type)
-target_link_libraries(myapp
+
+# linking
+target_link_libraries(${TargetName}
 	PRIVATE UpstreamA::lib)
 
 # target version properties
-set_target_properties(myapp PROPERTIES
-	OUTPUT_NAME myapp1
-	VERSION ${MyApp1_VERSION})
+set_target_properties(${TargetName} PROPERTIES
+	OUTPUT_NAME ${OutputName}
+	VERSION ${PROJECT_VERSION})
 
 ###
 # Install
 ###
 
 # install core library (add to export targets)
-install(TARGETS myapp
-	EXPORT  myappTargets
-	LIBRARY DESTINATION ${LibraryPackageLocation} COMPONENT MyApp
-	ARCHIVE DESTINATION ${LibraryPackageLocation} COMPONENT MyAppDevel
-	RUNTIME DESTINATION ${ExecutablePackageLocation} COMPONENT MyApp
-	INCLUDES DESTINATION ${IncludePackageLocation} COMPONENT MyAppDevel)
+install(TARGETS ${TargetName}
+	EXPORT  ${ExportsName}
+	LIBRARY DESTINATION ${LibraryPackageLocation} COMPONENT ${ComponentName}
+	ARCHIVE DESTINATION ${LibraryPackageLocation} COMPONENT ${ComponentDevelName}
+	RUNTIME DESTINATION ${ExecutablePackageLocation} COMPONENT ${ComponentName}
+	INCLUDES DESTINATION include)
 
 ###
 # Export
 ###
 
 # create targets file with paths into the build dir
-export(EXPORT myappTargets
-	FILE "${CMAKE_CURRENT_BINARY_DIR}/MyApp1Targets.cmake"
-	NAMESPACE MyApp1::)
+export(EXPORT ${ExportsName}
+	FILE "${CMAKE_BINARY_DIR}/${TargetsFilename}"
+	NAMESPACE ${PackageNamespace})
 
 # create targets file with paths into the install dir
-install(EXPORT myappTargets
-	FILE MyApp1Targets.cmake
-	NAMESPACE MyApp1::
+install(EXPORT ${ExportsName}
+	FILE ${TargetsFilename}
+	NAMESPACE ${PackageNamespace}
 	DESTINATION ${ConfigPackageLocation}
-	COMPONENT MyAppDevel)
+	COMPONENT ${ComponentDevelName})
 

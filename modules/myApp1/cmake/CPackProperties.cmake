@@ -23,12 +23,12 @@ set(CPACK_RESOURCE_FILE_WELCOME "${CMAKE_CURRENT_BINARY_DIR}/WELCOME.txt")
 set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
 set(CPACK_COMPONENTS_GROUPING ONE_PER_GROUP)
 
-# coponents
-set(CPACK_COMPONENTS_ALL MyApp1Devel)
+# components
+string(TOUPPER "${PROJECT_NAME}Devel" CompDUpper)
 
 # names & descriptions
-set(CPACK_COMPONENT_MYAPP1DEVEL_DISPLAY_NAME "My App 1 Development")
-set(CPACK_COMPONENT_MYAPP1DEVEL_DESCRIPTION "CMake support for MyApp1 package.")
+set(CPACK_COMPONENT_${CompDUpper}_DISPLAY_NAME "My App 1 Development" CACHE INTERNAL "" FORCE)
+set(CPACK_COMPONENT_${CompDUpper}_DESCRIPTION "CMake support for MyApp1 package." CACHE INTERNAL "" FORCE)
 
 # requireds
 
@@ -38,5 +38,5 @@ set(CPACK_COMPONENT_MYAPP1DEVEL_DESCRIPTION "CMake support for MyApp1 package.")
 # Runtime
 
 # Development
-set(CPACK_COMPONENT_MYAPP1DEVEL_GROUP "Development")
+set(CPACK_COMPONENT_${CompDUpper}_GROUP "Development" CACHE INTERNAL "" FORCE)
 

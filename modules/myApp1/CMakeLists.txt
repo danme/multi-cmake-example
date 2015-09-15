@@ -18,19 +18,19 @@
 cmake_minimum_required(VERSION 3.3)
 
 # Package configuration
-project(MyApp1 CXX)
+project(MyApp1 VERSION 0.0.2 LANGUAGES CXX)
+
+# package variables
+set(ExecutablePackageLocation bin)
+set(LibraryPackageLocation lib)
+set(IncludePackageLocation include/myapp1)
+set(ConfigPackageLocation lib/cmake/myapp1)
+set(PackageNamespace "${PROJECT_NAME}::")
 
 # includes
 include(cmake/CPackProperties.cmake)
 include(CTest)
 include(CMakePackageConfigHelpers)
-
-# package variables
-set(MyApp1_VERSION 0.0.2)
-set(ExecutablePackageLocation bin)
-set(LibraryPackageLocation lib)
-set(IncludePackageLocation include/myapp1)
-set(ConfigPackageLocation lib/cmake/myapp1)
 
 ###
 # Targets
@@ -48,9 +48,12 @@ endif()
 # Versioning
 # create version file for base package
 ###
+
+# create a tweak version for the current day for development
+string(TIMESTAMP Today "%y%m%d")
 write_basic_package_version_file(
-	"${CMAKE_CURRENT_BINARY_DIR}/MyApp1ConfigVersion.cmake"
-	VERSION ${MyApp1_VERSION}
+	"${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+	VERSION ${PROJECT_VERSION}.${Today}
 	COMPATIBILITY AnyNewerVersion)
 
 ###
@@ -59,8 +62,8 @@ write_basic_package_version_file(
 
 # create cmake files in build directory to use the build directly
 # copy config for use of the build dir
-configure_file(cmake/MyApp1Config.cmake
-	"${CMAKE_CURRENT_BINARY_DIR}/MyApp1Config.cmake"
+configure_file(cmake/${PROJECT_NAME}Config.cmake
+	"${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
 	COPYONLY)
 # CPack - license
 configure_file(COPYING
@@ -81,10 +84,10 @@ configure_file(WELCOME
 
 # create cmake files in install directory
 # copy config for development use of the installed version
-install(FILES cmake/MyApp1Config.cmake
-		"${CMAKE_CURRENT_BINARY_DIR}/MyApp1ConfigVersion.cmake"
+install(FILES cmake/${PROJECT_NAME}Config.cmake
+		"${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
 	DESTINATION ${ConfigPackageLocation}
-	COMPONENT MyApp1Devel)
+	COMPONENT ${PROJECT_NAME}Devel)
 
 ###
 # Packaging
