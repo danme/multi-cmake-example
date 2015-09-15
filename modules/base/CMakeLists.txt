@@ -94,6 +94,6 @@ install(FILES cmake/BaseConfig.cmake
 # Packaging
 ###
 
-# exception: CPack needs to be included at the end (special case)
+# exception: CPack needs to be included at the end
 include(CPack)
 
