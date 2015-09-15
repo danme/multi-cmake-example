@@ -25,11 +25,18 @@ set(CPACK_COMPONENTS_GROUPING ONE_PER_GROUP)
 
 # coponents
 # import components also from dependencies
-set(CPACK_COMPONENTS_ALL BaseDevel CoreDevel ADevel UpstreamADevel LibDevel MyStaticAppDevel)
+# this is needed for selective installation (we do not need BDevel)
+set(CPACK_COMPONENTS_ALL
+    BaseDevel
+    BasecoreDevel
+    BaseadapterADevel
+    UpstreamADevel
+    UpstreamAlibDevel
+    MyStaticAppDevel)
 
 # names & descriptions
-set(CPACK_COMPONENT_MYSTATICAPPDEVEL_DISPLAY_NAME "My App 1 Development")
-set(CPACK_COMPONENT_MYSTATICAPPDEVEL_DESCRIPTION "CMake support for MyApp1 package.")
+set(CPACK_COMPONENT_MYSTATICAPPDEVEL_DISPLAY_NAME "My static App Development")
+set(CPACK_COMPONENT_MYSTATICAPPDEVEL_DESCRIPTION "CMake support for MyStaticApp package.")
 
 # requireds
 
@@ -40,10 +47,3 @@ set(CPACK_COMPONENT_MYSTATICAPPDEVEL_DESCRIPTION "CMake support for MyApp1 packa
 
 # Development
 set(CPACK_COMPONENT_MYSTATICAPPDEVEL_GROUP "Development")
-set(CPACK_COMPONENT_BASEDEVEL_GROUP "Development")
-set(CPACK_COMPONENT_COREDEVEL_GROUP "Development")
-set(CPACK_COMPONENT_ADEVEL_GROUP "Development")
-set(CPACK_COMPONENT_BDEVEL_GROUP "Development")
-set(CPACK_COMPONENT_UPSTREAMADEVEL_GROUP "Development")
-set(CPACK_COMPONENT_LIBDEVEL_GROUP "Development")
-
