@@ -67,9 +67,10 @@ write_basic_package_version_file(
 
 # create cmake files in build directory to use the build directly
 # copy config for use of the build dir
+get_property(RequiredPackageComponents GLOBAL PROPERTY UpstreamAComponentsRequired)
 configure_file(cmake/${PROJECT_NAME}Config.cmake
 	"${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-	COPYONLY)
+	@ONLY)
 # CPack - license
 configure_file(COPYING
 	"${CMAKE_CURRENT_BINARY_DIR}/COPYING.txt"
@@ -89,10 +90,11 @@ configure_file(WELCOME
 
 # create cmake files in install directory
 # copy config for development use of the installed version
-install(FILES cmake/${PROJECT_NAME}Config.cmake
-		"${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-	DESTINATION ${ConfigPackageLocation}
-	COMPONENT ${PROJECT_NAME}Devel)
+install(FILES
+    "${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+    "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+  DESTINATION ${ConfigPackageLocation}
+  COMPONENT ${PROJECT_NAME}Devel)
 
 ###
 # Packaging
