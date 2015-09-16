@@ -20,6 +20,10 @@ cmake_minimum_required(VERSION 3.3)
 # target variables
 # treat them as constants, later modification can lead to hard to track bugs.
 set(TargetName core)
+set(PackageComponentName Core)
+
+###
+# the following variables are generated
 set(ExportsName "${PROJECT_NAME}${TargetName}Targets")
 # install components
 # use a qualified name that is unlikely to colide when imported to external
@@ -28,17 +32,18 @@ set(ComponentName ${PROJECT_NAME}${TargetName})
 set(ComponentDevelName ${PROJECT_NAME}${TargetName}Devel)
 # targets-file
 # targets-file name is usually "<package name><component key>Targets.cmake"
-# see CPackProperties.cmake and The ...Config.cmake file for the components usage
+# see CPackProperties.cmake and The Config.cmake file for the components usage
 # NOTE: the component key if a free string used in the Config file.
 #       The install components do not imply the keys automatically.
-set(PackageComponentName Core)
 set(TargetsFilename ${PROJECT_NAME}${PackageComponentName}Targets.cmake)
-set_property(GLOBAL APPEND PROPERTY ${PROJECT_NAME}ComponentsRequired ${PackageComponentName})
+set_property(GLOBAL APPEND PROPERTY
+  ${PROJECT_NAME}ComponentsRequired ${PackageComponentName})
 # output name
 # this name is used for the output file like: lib<package>_<target>.so
 # and must be designed to unlikely colide with existing files,
 # since on Linux typically all libraries are installed in a central lib folder.
 string(TOLOWER "${PROJECT_NAME}_${TargetName}" OutputName)
+###
 
 # sources
 # collecting the sources at the beginning is often seen and can be usefull
@@ -64,24 +69,24 @@ add_library(${TargetName} ${TargetSources})
 # make target accessible via its exported name
 add_library(${PackageNamespace}${TargetName} ALIAS ${TargetName})
 generate_export_header(${TargetName}
-	EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/${IncludePackageLocation}/${TargetName}_export.h)
+  EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/${IncludePackageLocation}/${TargetName}_export.h)
 target_compile_features(${TargetName}
-	PRIVATE cxx_auto_type)
+  PRIVATE cxx_auto_type)
 # the install command adds the include dirs when installing, but
 # the export script and current build need the include dirs to be set here:
 target_include_directories(${TargetName}
-	PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
-		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 
 # target version properties
 # define unique names and versions here !!!
 set_target_properties(${TargetName} PROPERTIES
-	OUTPUT_NAME ${OutputName}
-	VERSION ${PROJECT_VERSION}
-	SOVERSION 0
-	INTERFACE_${TargetName}_MAJOR_VERSION 0)
+  OUTPUT_NAME ${OutputName}
+  VERSION ${PROJECT_VERSION}
+  SOVERSION 0
+  INTERFACE_${TargetName}_MAJOR_VERSION 0)
 set_property(TARGET ${TargetName} APPEND PROPERTY
-	COMPATIBLE_INTERFACE_STRING ${TargetName}_MAJOR_VERSION)
+  COMPATIBLE_INTERFACE_STRING ${TargetName}_MAJOR_VERSION)
 
 ###
 # Install
@@ -91,17 +96,18 @@ set_property(TARGET ${TargetName} APPEND PROPERTY
 # INCLUDES defines the include directories after installation,
 # we use the same path in dev as in installation with the origin include
 install(TARGETS ${TargetName}
-	EXPORT  ${ExportsName}
-	LIBRARY DESTINATION ${LibraryPackageLocation} COMPONENT ${ComponentName}
-	ARCHIVE DESTINATION ${LibraryPackageLocation} COMPONENT ${ComponentDevelName}
-	RUNTIME DESTINATION ${ExecutablePackageLocation} COMPONENT ${ComponentName}
-	INCLUDES DESTINATION include)
+  EXPORT  ${ExportsName}
+  LIBRARY DESTINATION ${LibraryPackageLocation} COMPONENT ${ComponentName}
+  ARCHIVE DESTINATION ${LibraryPackageLocation} COMPONENT ${ComponentDevelName}
+  RUNTIME DESTINATION ${ExecutablePackageLocation} COMPONENT ${ComponentName}
+  INCLUDES DESTINATION include)
 
 # install library headers for development
-install(FILES ${TargetHeaders}
-		"${CMAKE_CURRENT_BINARY_DIR}/${IncludePackageLocation}/${TargetName}_export.h"
-	DESTINATION ${IncludePackageLocation}
-	COMPONENT ${ComponentDevelName})
+install(
+  FILES ${TargetHeaders}
+    "${CMAKE_CURRENT_BINARY_DIR}/${IncludePackageLocation}/${TargetName}_export.h"
+  DESTINATION ${IncludePackageLocation}
+  COMPONENT ${ComponentDevelName})
 
 ###
 # Export
@@ -109,12 +115,12 @@ install(FILES ${TargetHeaders}
 
 # create targets file with paths into the build dir
 export(EXPORT ${ExportsName}
-	FILE "${CMAKE_BINARY_DIR}/${TargetsFilename}"
-	NAMESPACE ${PackageNamespace})
+  FILE "${CMAKE_BINARY_DIR}/${TargetsFilename}"
+  NAMESPACE ${PackageNamespace})
 
 # create targets file with paths into the install dir
 install(EXPORT ${ExportsName}
-	FILE ${TargetsFilename}
-	NAMESPACE ${PackageNamespace}
-	DESTINATION ${ConfigPackageLocation}
-	COMPONENT ${ComponentDevelName})
+  FILE ${TargetsFilename}
+  NAMESPACE ${PackageNamespace}
+  DESTINATION ${ConfigPackageLocation}
+  COMPONENT ${ComponentDevelName})

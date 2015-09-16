@@ -27,8 +27,10 @@ set(CPACK_COMPONENTS_GROUPING ONE_PER_GROUP)
 string(TOUPPER "${PROJECT_NAME}Devel" CompDUpper)
 
 # names & descriptions
-set(CPACK_COMPONENT_${CompDUpper}_DISPLAY_NAME "Base Development" CACHE INTERNAL "" FORCE)
-set(CPACK_COMPONENT_${CompDUpper}_DESCRIPTION "CMake support for Base package." CACHE INTERNAL "" FORCE)
+set(CPACK_COMPONENT_${CompDUpper}_DISPLAY_NAME "Base Development"
+  CACHE INTERNAL "" FORCE)
+set(CPACK_COMPONENT_${CompDUpper}_DESCRIPTION "CMake support for Base package."
+  CACHE INTERNAL "" FORCE)
 
 # requireds
 
@@ -39,4 +41,3 @@ set(CPACK_COMPONENT_${CompDUpper}_DESCRIPTION "CMake support for Base package." 
 
 # Development
 set(CPACK_COMPONENT_${CompDUpper}_GROUP "Development" CACHE INTERNAL "" FORCE)
-

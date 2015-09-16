@@ -48,9 +48,9 @@ add_subdirectory(adapterB)
 
 # tests
 if(BUILD_TESTING)
-	add_subdirectory(tests/core)
-	add_subdirectory(tests/adapterA)
-	add_subdirectory(tests/adapterB)
+  add_subdirectory(tests/core)
+  add_subdirectory(tests/adapterA)
+  add_subdirectory(tests/adapterB)
 endif()
 
 ###
@@ -61,9 +61,9 @@ endif()
 # create a tweak version for the current day for development
 string(TIMESTAMP Today "%y%m%d")
 write_basic_package_version_file(
-	"${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-	VERSION ${PROJECT_VERSION}.${Today}
-	COMPATIBILITY AnyNewerVersion)
+  "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+  VERSION ${PROJECT_VERSION}.${Today}
+  COMPATIBILITY AnyNewerVersion)
 
 ###
 # Export
@@ -74,24 +74,26 @@ write_basic_package_version_file(
 # directly to find the package (PackageRegistry, CMAKE_PREFIX_PATH, ...)
 
 # configure the package config using the targets components
-get_property(RequiredPackageComponents GLOBAL PROPERTY ${PROJECT_NAME}ComponentsRequired)
-get_property(OptionalPackageComponents GLOBAL PROPERTY ${PROJECT_NAME}ComponentsOptional)
+get_property(RequiredPackageComponents GLOBAL PROPERTY
+  ${PROJECT_NAME}ComponentsRequired)
+get_property(OptionalPackageComponents GLOBAL PROPERTY
+  ${PROJECT_NAME}ComponentsOptional)
 configure_package_config_file(cmake/${PROJECT_NAME}Config.cmake.in
-	"${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-	INSTALL_DESTINATION ${ConfigPackageLocation}
-	NO_SET_AND_CHECK_MACRO)
+  "${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+  INSTALL_DESTINATION ${ConfigPackageLocation}
+  NO_SET_AND_CHECK_MACRO)
 # CPack - license
 configure_file(COPYING
-	"${CMAKE_CURRENT_BINARY_DIR}/COPYING.txt"
-	COPYONLY)
+  "${CMAKE_CURRENT_BINARY_DIR}/COPYING.txt"
+  COPYONLY)
 # CPack - readme
 configure_file(README
-	"${CMAKE_CURRENT_BINARY_DIR}/README.txt"
-	COPYONLY)
+  "${CMAKE_CURRENT_BINARY_DIR}/README.txt"
+  COPYONLY)
 # CPack - welcome
 configure_file(WELCOME
-	"${CMAKE_CURRENT_BINARY_DIR}/WELCOME.txt"
-	COPYONLY)
+  "${CMAKE_CURRENT_BINARY_DIR}/WELCOME.txt"
+  COPYONLY)
 
 ###
 # Install
@@ -111,4 +113,3 @@ install(FILES
 
 # exception: CPack needs to be included at the end
 include(CPack)
-

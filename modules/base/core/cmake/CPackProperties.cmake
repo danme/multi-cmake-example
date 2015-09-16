@@ -22,17 +22,19 @@ string(TOUPPER ${ComponentName} CompUpper)
 string(TOUPPER ${ComponentDevelName} CompDUpper)
 
 # names & descriptions
-set(CPACK_COMPONENT_${CompUpper}_DISPLAY_NAME "Core" CACHE INTERNAL "" FORCE)
+set(CPACK_COMPONENT_${CompUpper}_DISPLAY_NAME "Core"
+  CACHE INTERNAL "" FORCE)
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/doc/DESCRIPTION Description)
 string(REGEX REPLACE "\n" " " Description "${Description}")
-set(CPACK_COMPONENT_${CompUpper}_DESCRIPTION "${Description}" CACHE INTERNAL "" FORCE)
-#set(CPACK_COMPONENT_${CompUpper}_DESCRIPTION_FILE ${CMAKE_CURRENT_SOURCE_DIR}/doc/DESCRIPTION CACHE INTERNAL "" FORCE)
+set(CPACK_COMPONENT_${CompUpper}_DESCRIPTION "${Description}"
+  CACHE INTERNAL "" FORCE)
 
 # requireds
 set(CPACK_COMPONENT_${CompUpper}_REQUIRED ON CACHE INTERNAL "" FORCE)
 
 # dependencies
-set(CPACK_COMPONENT_${CompDUpper}_DEPENDS ${PROJECT_NAME}Devel ${ComponentName} CACHE INTERNAL "" FORCE)
+set(CPACK_COMPONENT_${CompDUpper}_DEPENDS ${PROJECT_NAME}Devel ${ComponentName}
+  CACHE INTERNAL "" FORCE)
 
 # groups
 # Runtime
