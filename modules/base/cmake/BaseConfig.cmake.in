@@ -17,6 +17,8 @@
 
 # Package export configuration
 
+@PACKAGE_INIT@
+
 ###
 # Dependencies
 ###
@@ -36,11 +38,21 @@ foreach(_comp ${RequiredComponents})
   include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@${_comp}Targets.cmake")
 endforeach()
 
-# selectable components
-foreach(_comp ${Base_FIND_COMPONENTS})
-  if (NOT ";${OptinalComponents};" MATCHES ${_comp})
-    set(Base_FOUND False)
-    set(Base_NOTFOUND_MESSAGE "Specified unsupported component: ${_comp}")
+# optional components
+foreach(_comp ${@PROJECT_NAME@_FIND_COMPONENTS})
+  if (NOT ";${OptionalComponents};" MATCHES ${_comp})
+    set(@PROJECT_NAME@_FOUND False)
+    set(@PROJECT_NAME@_NOT_FOUND_MESSAGE "Specified unsupported component: ${_comp}")
+  else()
+    # check if supported component is installed
+    if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/Base${_comp}Targets.cmake")
+      set(@PROJECT_NAME@_${_comp}_FOUND TRUE)
+      include("${CMAKE_CURRENT_LIST_DIR}/Base${_comp}Targets.cmake")
+    else()
+      set(@PROJECT_NAME@_FOUND False)
+      set(@PROJECT_NAME@_NOT_FOUND_MESSAGE "Specified not installed component: ${_comp}")
+    endif()
   endif()
-  include("${CMAKE_CURRENT_LIST_DIR}/Base${_comp}Targets.cmake")
 endforeach()
+
+check_required_components(@PROJECT_NAME@)

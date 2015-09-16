@@ -76,9 +76,10 @@ write_basic_package_version_file(
 # configure the package config using the targets components
 get_property(RequiredPackageComponents GLOBAL PROPERTY ${PROJECT_NAME}ComponentsRequired)
 get_property(OptionalPackageComponents GLOBAL PROPERTY ${PROJECT_NAME}ComponentsOptional)
-configure_file(cmake/${PROJECT_NAME}Config.cmake.in
+configure_package_config_file(cmake/${PROJECT_NAME}Config.cmake.in
 	"${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-	@ONLY)
+	INSTALL_DESTINATION ${ConfigPackageLocation}
+	NO_SET_AND_CHECK_MACRO)
 # CPack - license
 configure_file(COPYING
 	"${CMAKE_CURRENT_BINARY_DIR}/COPYING.txt"
