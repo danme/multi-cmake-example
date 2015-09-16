@@ -28,14 +28,17 @@
 # Target includes
 ###
 
+set(RequiredComponents @RequiredPackageComponents@)
+set(OptionalComponents @OptionalPackageComponents@)
+
 # must have includes
-include("${CMAKE_CURRENT_LIST_DIR}/BaseCoreTargets.cmake")
+foreach(_comp ${RequiredComponents})
+  include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@${_comp}Targets.cmake")
+endforeach()
 
 # selectable components
-set(_supported_components A B)
-
 foreach(_comp ${Base_FIND_COMPONENTS})
-  if (NOT ";${_supported_components};" MATCHES ${_comp})
+  if (NOT ";${OptinalComponents};" MATCHES ${_comp})
     set(Base_FOUND False)
     set(Base_NOTFOUND_MESSAGE "Specified unsupported component: ${_comp}")
   endif()

@@ -28,6 +28,10 @@ set(IncludePackageLocation include/base)
 set(ConfigPackageLocation lib/cmake/base)
 set(PackageNamespace "${PROJECT_NAME}::")
 
+# workaround to disable CTest targets like Continuous Nightly etc. for CDash
+# But we still want ctest to produce an output for our own Dashboard
+set_property(GLOBAL PROPERTY CTEST_TARGETS_ADDED 1)
+
 # includes
 include(cmake/CPackProperties.cmake)
 include(CTest)
@@ -65,11 +69,16 @@ write_basic_package_version_file(
 # Export
 ###
 
-# create cmake files in build directory to use the build directly
-# copy config for use of the build dir
-configure_file(cmake/${PROJECT_NAME}Config.cmake
+# create cmake files in build directory
+# putting the files in the build root enables the use of the build dir
+# directly to find the package (PackageRegistry, CMAKE_PREFIX_PATH, ...)
+
+# configure the package config using the targets components
+get_property(RequiredPackageComponents GLOBAL PROPERTY ${PROJECT_NAME}ComponentsRequired)
+get_property(OptionalPackageComponents GLOBAL PROPERTY ${PROJECT_NAME}ComponentsOptional)
+configure_file(cmake/${PROJECT_NAME}Config.cmake.in
 	"${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-	COPYONLY)
+	@ONLY)
 # CPack - license
 configure_file(COPYING
 	"${CMAKE_CURRENT_BINARY_DIR}/COPYING.txt"
@@ -89,10 +98,11 @@ configure_file(WELCOME
 
 # create cmake files in install directory
 # copy config for development use of the installed version
-install(FILES cmake/${PROJECT_NAME}Config.cmake
-		"${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-	DESTINATION ${ConfigPackageLocation}
-	COMPONENT ${PROJECT_NAME}Devel)
+install(FILES
+    "${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+    "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+  DESTINATION ${ConfigPackageLocation}
+  COMPONENT ${PROJECT_NAME}Devel)
 
 ###
 # Packaging

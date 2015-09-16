@@ -31,7 +31,9 @@ set(ComponentDevelName ${PROJECT_NAME}${TargetName}Devel)
 # see CPackProperties.cmake and The ...Config.cmake file for the components usage
 # NOTE: the component key if a free string used in the Config file.
 #       The install components do not imply the keys automatically.
-set(TargetsFilename BaseCoreTargets.cmake)
+set(PackageComponentName Core)
+set(TargetsFilename ${PROJECT_NAME}${PackageComponentName}Targets.cmake)
+set_property(GLOBAL APPEND PROPERTY ${PROJECT_NAME}ComponentsRequired ${PackageComponentName})
 # output name
 # this name is used for the output file like: lib<package>_<target>.so
 # and must be designed to unlikely colide with existing files,
