@@ -28,6 +28,10 @@ set(ConfigPackageLocation lib/cmake/upstreamA)
 set(IncludePackageLocation include/upstreamA)
 set(PackageNamespace "${PROJECT_NAME}::")
 
+# workaround to disable CTest targets like Continuous Nightly etc. for CDash
+# But we still want ctest to produce an output for our own Dashboard
+set_property(GLOBAL PROPERTY CTEST_TARGETS_ADDED 1)
+
 # includes
 include(cmake/CPackProperties.cmake)
 include(CTest)
