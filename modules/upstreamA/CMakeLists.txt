@@ -67,8 +67,8 @@ write_basic_package_version_file(
 
 # create cmake files in build directory to use the build directly
 # copy config for use of the build dir
-get_property(RequiredPackageComponents GLOBAL PROPERTY UpstreamAComponentsRequired)
-configure_file(cmake/${PROJECT_NAME}Config.cmake
+get_property(RequiredPackageComponents GLOBAL PROPERTY ${PROJECT_NAME}ComponentsRequired)
+configure_file(cmake/${PROJECT_NAME}Config.cmake.in
 	"${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
 	@ONLY)
 # CPack - license
