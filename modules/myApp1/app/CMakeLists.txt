@@ -54,9 +54,9 @@ find_package(UpstreamA 0.0.1 REQUIRED)
 ###
 
 # target
-add_library(${TargetName} ${TargetSources})
+add_executable(${TargetName} ${TargetSources})
 # make target accessible via its exported name
-add_library(${PackageNamespace}${TargetName} ALIAS ${TargetName})
+add_executable(${PackageNamespace}${TargetName} ALIAS ${TargetName})
 target_compile_features(${TargetName}
 	PRIVATE cxx_auto_type)
 
